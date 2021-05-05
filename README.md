@@ -15,6 +15,38 @@ This project is a Kanban Board implementation like Trello.
 - [ ] Test
 - [ ] Error Handling
 
+## Installation
+
+```bash
+(./backend)$ npm install
+```
+
+## Running the nest.js app
+
+```bash
+# development
+(./backend)$ npm run start
+
+# watch mode
+(./backend)$ npm run start:dev
+
+# production mode
+(./backend)$ npm run start:prod
+```
+
+## Test
+
+```bash
+# unit tests
+(./backend)$ npm run test
+
+# e2e tests
+(./backend)$ npm run test:e2e
+
+# test coverage
+(./backend)$ npm run test:cov
+```
+
 ## Database Design
 
 ![Screenshot](/db-design.png)
