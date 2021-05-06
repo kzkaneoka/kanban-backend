@@ -15,13 +15,13 @@ This project is a Kanban Board implementation like Trello.
 - [ ] Test
 - [ ] Error Handling
 
-## Installation
+## Install backend
 
 ```bash
 (./backend)$ npm install
 ```
 
-## Running the nest.js app
+## Run backend
 
 ```bash
 # development
@@ -34,7 +34,7 @@ This project is a Kanban Board implementation like Trello.
 (./backend)$ npm run start:prod
 ```
 
-## Test
+## Test backend
 
 ```bash
 # unit tests

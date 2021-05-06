@@ -6,17 +6,20 @@ import {
   Param,
   Post,
   Put,
-  Query,
 } from '@nestjs/common';
+import { ColumnsService } from './columns.service';
 
 import { CreateColumnDto } from './dto/create-column.dto';
 import { UpdateColumnDto } from './dto/update-column.dto';
+import { Column } from './interface/column.interface';
 
 @Controller('columns')
 export class ColumnsController {
+  constructor(private columnService: ColumnsService) {}
+
   @Get()
-  findAll(@Query() query): string {
-    return `This action returns all columns with ${query}`;
+  async findAll(): Promise<Column[]> {
+    return this.columnService.findAll();
   }
 
   @Get(':id')
@@ -25,8 +28,8 @@ export class ColumnsController {
   }
 
   @Post()
-  create(@Body() createColumnDto: CreateColumnDto): string {
-    return `This action adds a new column with ${createColumnDto}`;
+  create(@Body() createColumnDto: CreateColumnDto) {
+    this.columnService.create(createColumnDto);
   }
 
   @Put(':id')
