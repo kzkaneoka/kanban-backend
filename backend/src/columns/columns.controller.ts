@@ -19,7 +19,9 @@ export class ColumnsController {
   constructor(
     private columnService: ColumnsService,
     private readonly logger: Logger,
-  ) {}
+  ) {
+    this.logger.setContext(ColumnsController.name);
+  }
 
   @Get()
   async findAll(): Promise<Column[]> {
@@ -41,7 +43,7 @@ export class ColumnsController {
   }
 
   @Put(':id')
-  update(@Param(':id') id: string, @Body() updateColumnDto: UpdateColumnDto) {
+  update(@Param('id') id: string, @Body() updateColumnDto: UpdateColumnDto) {
     this.logger.log(
       `This action updates a column with ${id} and ${JSON.stringify(
         updateColumnDto,
