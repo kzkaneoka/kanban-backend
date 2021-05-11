@@ -5,9 +5,12 @@ import {
   Get,
   Logger,
   Param,
+  ParseUUIDPipe,
   Post,
   Put,
+  Req,
 } from '@nestjs/common';
+import { Request } from 'express';
 
 import { ColumnsService } from './columns.service';
 import { CreateColumnDto } from './dto/create-column.dto';
@@ -19,40 +22,44 @@ export class ColumnsController {
   constructor(
     private columnService: ColumnsService,
     private readonly logger: Logger,
-  ) {
-    this.logger.setContext(ColumnsController.name);
-  }
+  ) {}
 
   @Get()
-  async findAll(): Promise<Column[]> {
-    this.logger.log('This action returns a list of columns');
+  async findAll(@Req() req: Request): Promise<Column[]> {
+    const httpRequest = `${req.method} ${req.url} ${JSON.stringify(req.body)}`;
+    this.logger.log(`${httpRequest} - this action returns a list of columns`);
     return this.columnService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string): any {
-    this.logger.log(`This action returns a column with ${id}`);
+  @Get(':uuid')
+  findOne(
+    @Req() req: Request,
+    @Param('uuid', ParseUUIDPipe) uuid: string,
+  ): any {
+    const httpRequest = `${req.method} ${req.url} ${JSON.stringify(req.body)}`;
+    this.logger.log(`${httpRequest} - this action returns a column`);
   }
 
   @Post()
-  create(@Body() createColumnDto: CreateColumnDto) {
-    this.logger.log(
-      `This action creates a column with ${JSON.stringify(createColumnDto)}`,
-    );
+  create(@Req() req: Request, @Body() createColumnDto: CreateColumnDto) {
+    const httpRequest = `${req.method} ${req.url} ${JSON.stringify(req.body)}`;
+    this.logger.log(`${httpRequest} - this action creates a column`);
     this.columnService.create(createColumnDto);
   }
 
-  @Put(':id')
-  update(@Param('id') id: string, @Body() updateColumnDto: UpdateColumnDto) {
-    this.logger.log(
-      `This action updates a column with ${id} and ${JSON.stringify(
-        updateColumnDto,
-      )}`,
-    );
+  @Put(':uuid')
+  update(
+    @Req() req: Request,
+    @Param('uuid') uuid: string,
+    @Body() updateColumnDto: UpdateColumnDto,
+  ) {
+    const httpRequest = `${req.method} ${req.url} ${JSON.stringify(req.body)}`;
+    this.logger.log(`${httpRequest} - this action updates a column`);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    this.logger.log(`This action deletes a column with ${id}`);
+  @Delete(':uuid')
+  remove(@Req() req: Request, @Param('uuid', ParseUUIDPipe) uuid: string) {
+    const httpRequest = `${req.method} ${req.url} ${JSON.stringify(req.body)}`;
+    this.logger.log(`${httpRequest} - this action deletes a column`);
   }
 }
