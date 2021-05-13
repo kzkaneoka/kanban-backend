@@ -1,23 +1,28 @@
-# Kanban Board
+# Kanban
 
 ## Project Overview
 
-This project is a Kanban Board implementation like Trello.
+Kanban is a Trello clone in NestJS.
 
 ![Screenshot](/trello.png)
 
 ## Features
 
-- [ ] API Server
-- [ ] TypeScript
+- [x] API Server
+- [x] TypeScript
+- [x] Logger
+- [x] Validation
+- [x] Error Handling
+- [ ] Auth
+- [ ] Test
+- [ ] Swagger
 - [ ] SQL
 - [ ] Docker
-- [ ] Test
-- [ ] Error Handling
 
 ## Install backend
 
 ```bash
+# install dependencies
 (./backend)$ npm install
 ```
 
