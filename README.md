@@ -12,11 +12,11 @@ Kanban is a Trello clone in NestJS.
 - [x] TypeScript
 - [x] Logger
 - [x] Validation
-- [x] Error Handling
+- [ ] Error Handling
 - [ ] Auth
 - [ ] Test
 - [ ] Swagger
-- [ ] SQL
+- [x] SQL
 - [ ] Docker
 
 ## Install backend
