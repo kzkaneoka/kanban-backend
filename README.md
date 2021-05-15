@@ -1,8 +1,8 @@
-# Kanban
+# Kanban Backend
 
 ## Project Overview
 
-Kanban is a Trello clone in NestJS.
+Kanban backend is a Trello backend clone in NestJS.
 
 ![Screenshot](/trello.png)
 
@@ -19,37 +19,37 @@ Kanban is a Trello clone in NestJS.
 - [x] SQL
 - [ ] Docker
 
-## Install backend
+## Install
 
 ```bash
 # install dependencies
-(./backend)$ npm install
+$ npm install
 ```
 
-## Run backend
+## Run
 
 ```bash
 # development
-(./backend)$ npm run start
+$ npm run start
 
 # watch mode
-(./backend)$ npm run start:dev
+$ npm run start:dev
 
 # production mode
-(./backend)$ npm run start:prod
+$ npm run start:prod
 ```
 
-## Test backend
+## Test
 
 ```bash
 # unit tests
-(./backend)$ npm run test
+$ npm run test
 
 # e2e tests
-(./backend)$ npm run test:e2e
+$ npm run test:e2e
 
 # test coverage
-(./backend)$ npm run test:cov
+$ npm run test:cov
 ```
 
 ## Database Design

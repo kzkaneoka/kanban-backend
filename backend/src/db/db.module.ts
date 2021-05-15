@@ -1,9 +1,7 @@
 import { Module } from '@nestjs/common';
-
 import { ObjectionModule } from '@willsoto/nestjs-objection';
-
 import * as knexfile from '../../knexfile';
-import { ColumnModel } from '../columns/column.model';
+import { ColumnModel } from '../columns/models/column.model';
 
 @Module({
   imports: [
