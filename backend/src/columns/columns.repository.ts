@@ -1,21 +1,10 @@
 import { Logger, Injectable } from '@nestjs/common';
+import { UpdateColumnDto } from './dto/update-column.dto';
 import { ColumnModel } from './models/column.model';
 
 @Injectable()
 export class ColumnsRepository {
   constructor(private readonly logger: Logger) {}
-
-  findAll(): Promise<ColumnModel[]> {
-    const message = 'ColumnsRepository.findAll()';
-    this.logger.log(message);
-    return ColumnModel.query().orderBy('order');
-  }
-
-  findById(id: string): Promise<ColumnModel> {
-    const message = `ColumnsRepository.findById() id=${id}`;
-    this.logger.log(message);
-    return ColumnModel.query().findById(id);
-  }
 
   async create(column: ColumnModel): Promise<ColumnModel> {
     const message = `ColumnsRepository.create() data=${JSON.stringify(column)}`;
@@ -26,12 +15,25 @@ export class ColumnsRepository {
       .returning('*');
   }
 
-  async updateNameAndOrder(
+  findAll(): Promise<ColumnModel[]> {
+    const message = 'ColumnsRepository.findAll()';
+    this.logger.log(message);
+    return ColumnModel.query().orderBy('order');
+  }
+
+  findOne(id: string): Promise<ColumnModel> {
+    const message = `ColumnsRepository.findOne() id=${id}`;
+    this.logger.log(message);
+    return ColumnModel.query().findById(id);
+  }
+
+  async updateWithOrder(
     id: string,
-    name: string,
-    order: number,
+    updateColumnDto: UpdateColumnDto,
   ): Promise<ColumnModel> {
-    const message = `ColumnsRepository.updateNameAndOrder() id=${id} name=${name} order=${order}`;
+    const message = `ColumnsRepository.updateWithOrder() id=${id} updateColumnDto=${JSON.stringify(
+      updateColumnDto,
+    )}`;
     this.logger.log(message);
 
     // fetch columns
@@ -40,6 +42,7 @@ export class ColumnsRepository {
       .orderBy('order');
 
     // adjust order to fit between 1 <= order <= columns.length
+    let order = updateColumnDto.order;
     if (order < 1) {
       order = 1;
     } else if (order > columns.length) {
@@ -64,63 +67,28 @@ export class ColumnsRepository {
       }
     }
 
+    updateColumnDto.order = order;
     return ColumnModel.query().updateAndFetchById(id, {
-      name,
-      order,
+      ...updateColumnDto,
       updatedAt: new Date(),
     });
   }
 
-  updateName(id: string, name: string): Promise<ColumnModel> {
-    const message = `ColumnsRepository.updateName() id=${id} name=${name}`;
+  updateWithOutOrder(
+    id: string,
+    updateColumnDto: UpdateColumnDto,
+  ): Promise<ColumnModel> {
+    const message = `ColumnsRepository.updateWithOutOrder() id=${id}} updateColumnDto=${JSON.stringify(
+      updateColumnDto,
+    )}`;
     this.logger.log(message);
     return ColumnModel.query().updateAndFetchById(id, {
-      name,
+      ...updateColumnDto,
       updatedAt: new Date(),
     });
   }
 
-  async updateOrder(id: string, order: number): Promise<ColumnModel> {
-    const message = `ColumnsRepository.updateOrder() id=${id} order=${order}`;
-    this.logger.log(message);
-
-    // fetch columns
-    const columns = await ColumnModel.query()
-      .select('id', 'order')
-      .orderBy('order');
-
-    // adjust order to fit between 1 <= order <= columns.length
-    if (order < 1) {
-      order = 1;
-    } else if (order > columns.length) {
-      order = columns.length;
-    }
-
-    // find index of column to update
-    const index = columns.findIndex((column) => column.id === id);
-
-    // update orders
-    if (order < columns[index].order) {
-      for (let i = order - 1; i < index; ++i) {
-        await ColumnModel.query()
-          .patch({ order: columns[i].order + 1 })
-          .where('id', columns[i].id);
-      }
-    } else if (order > columns[index].order) {
-      for (let i = order - 1; i > index; --i) {
-        await ColumnModel.query()
-          .patch({ order: columns[i].order - 1 })
-          .where('id', columns[i].id);
-      }
-    }
-
-    return ColumnModel.query().updateAndFetchById(id, {
-      order,
-      updatedAt: new Date(),
-    });
-  }
-
-  async removeById(id: string): Promise<ColumnModel> {
+  async remove(id: string): Promise<ColumnModel> {
     const message = `ColumnsRepository.remove() id=${id}}`;
     this.logger.log(message);
 

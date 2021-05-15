@@ -41,7 +41,7 @@ export class ColumnsController {
   findOne(@Param('id', ParseUUIDPipe) id: string): Promise<ColumnModel> {
     const message = `ColumnsController.findOne() id=${id}`;
     this.logger.log(message);
-    return this.columnsService.findById(id);
+    return this.columnsService.findOne(id);
   }
 
   @Put(':id')
@@ -49,7 +49,9 @@ export class ColumnsController {
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateColumnDto: UpdateColumnDto,
   ): Promise<ColumnModel> {
-    const message = `ColumnsController.update() id=${id} updateColumnDto=${updateColumnDto}`;
+    const message = `ColumnsController.update() id=${id} updateColumnDto=${JSON.stringify(
+      updateColumnDto,
+    )}`;
     this.logger.log(message);
     return this.columnsService.update(id, updateColumnDto);
   }

@@ -1,4 +1,4 @@
-import { Logger, Inject, Injectable } from '@nestjs/common';
+import { Logger, Injectable } from '@nestjs/common';
 import { ColumnsRepository } from './columns.repository';
 import { CreateColumnDto } from './dto/create-column.dto';
 import { UpdateColumnDto } from './dto/update-column.dto';
@@ -7,7 +7,7 @@ import { ColumnModel } from './models/column.model';
 @Injectable()
 export class ColumnsService {
   constructor(
-    @Inject(ColumnsRepository) private readonly columnsRepository: any,
+    private readonly columnsRepository: ColumnsRepository,
     private readonly logger: Logger,
   ) {}
 
@@ -27,10 +27,10 @@ export class ColumnsService {
     return this.columnsRepository.findAll();
   }
 
-  findById(id: string): Promise<ColumnModel> {
-    const message = `ColumnsService.findById() id=${id}`;
+  findOne(id: string): Promise<ColumnModel> {
+    const message = `ColumnsService.findOne() id=${id}`;
     this.logger.log(message);
-    return this.columnsRepository.findById(id);
+    return this.columnsRepository.findOne(id);
   }
 
   update(id: string, updateColumnDto: UpdateColumnDto): Promise<ColumnModel> {
@@ -38,22 +38,16 @@ export class ColumnsService {
       updateColumnDto,
     )}`;
     this.logger.log(message);
-    const name = updateColumnDto.name;
-    const order = updateColumnDto.order;
-    if (name !== undefined && order !== undefined) {
-      return this.columnsRepository.updateNameAndOrder(id, name, order);
-    } else if (name !== undefined) {
-      return this.columnsRepository.updateName(id, name);
-    } else if (order !== undefined) {
-      return this.columnsRepository.updateOrder(id, order);
+    if (updateColumnDto.order !== undefined) {
+      return this.columnsRepository.updateWithOrder(id, updateColumnDto);
     } else {
-      return this.columnsRepository.findById(id);
+      return this.columnsRepository.updateWithOutOrder(id, updateColumnDto);
     }
   }
 
   remove(id: string): Promise<ColumnModel> {
     const message = `ColumnsService.remove() id=${id}`;
     this.logger.log(message);
-    return this.columnsRepository.removeById(id);
+    return this.columnsRepository.remove(id);
   }
 }
