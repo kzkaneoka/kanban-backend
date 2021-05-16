@@ -1,4 +1,5 @@
 import { Logger, Injectable } from '@nestjs/common';
+import { CreateCardDto } from './dto/create-card.dto';
 import { UpdateCardDto } from './dto/update-card.dto';
 import { CardModel } from './models/card.model';
 
@@ -6,14 +7,16 @@ import { CardModel } from './models/card.model';
 export class CardsRepository {
   constructor(private readonly logger: Logger) {}
 
-  async create(card: CardModel): Promise<CardModel> {
-    const message = `CardsRepository.create() card=${JSON.stringify(card)}`;
+  async create(createCardDto: CreateCardDto): Promise<CardModel> {
+    const message = `CardsRepository.create() card=${JSON.stringify(
+      createCardDto,
+    )}`;
     this.logger.log(message);
     const size = await CardModel.query()
-      .where({ columnId: card.columnId })
+      .where({ columnId: createCardDto.columnId })
       .resultSize();
     return CardModel.query()
-      .insert({ ...card, order: size + 1 })
+      .insert({ ...createCardDto, order: size + 1 })
       .returning('*');
   }
 
@@ -32,61 +35,26 @@ export class CardsRepository {
     return CardModel.query().findById(id);
   }
 
-  async updateWithOrder(
-    id: string,
-    updateCardDto: UpdateCardDto,
-  ): Promise<CardModel> {
-    const message = `CardsRepository.updateWithOrder() id=${id} updateCardDto=${JSON.stringify(
-      updateCardDto,
-    )}`;
+  async findWithSelectAndOrder(id: string): Promise<CardModel[]> {
+    const message = `CardsRepository.findWithSelectAndOrder() id=${id}`;
     this.logger.log(message);
-
-    // fetch cards
     const card = await CardModel.query().findById(id).select('columnId');
-    this.logger.log(`${JSON.stringify(card)}`);
-    const cards = await CardModel.query()
-      .where({ columnId: card.columnId })
+    return CardModel.query()
+      .where({
+        columnId: card.columnId,
+      })
       .select('id', 'order')
       .orderBy('order');
-
-    // adjust order to fit between 1 <= order <= cards.length
-    let order = updateCardDto.order;
-    if (order < 1) {
-      order = 1;
-    } else if (order > cards.length) {
-      order = cards.length;
-    }
-
-    // find index of card to update
-    const index = cards.findIndex((card) => card.id === id);
-
-    // update orders
-    if (order < cards[index].order) {
-      for (let i = order - 1; i < index; ++i) {
-        await CardModel.query()
-          .patch({ order: cards[i].order + 1 })
-          .where('id', cards[i].id);
-      }
-    } else if (order > cards[index].order) {
-      for (let i = order - 1; i > index; --i) {
-        await CardModel.query()
-          .patch({ order: cards[i].order - 1 })
-          .where('id', cards[i].id);
-      }
-    }
-
-    updateCardDto.order = order;
-    return CardModel.query().updateAndFetchById(id, {
-      ...updateCardDto,
-      updatedAt: new Date(),
-    });
   }
 
-  updateWithOutOrder(
-    id: string,
-    updateCardDto: UpdateCardDto,
-  ): Promise<CardModel> {
-    const message = `CardsRepository.updateWithOutOrder() id=${id}} updateCardDto=${JSON.stringify(
+  updateOrder(id: string, order: number): Promise<any> {
+    const message = `CardsRepository.updateOrder() id=${id} order=${order}`;
+    this.logger.log(message);
+    return CardModel.query().patch({ order: order }).where('id', id);
+  }
+
+  update(id: string, updateCardDto: UpdateCardDto): Promise<CardModel> {
+    const message = `CardsRepository.update() id=${id}} updateCardDto=${JSON.stringify(
       updateCardDto,
     )}`;
     this.logger.log(message);
@@ -96,27 +64,9 @@ export class CardsRepository {
     });
   }
 
-  async remove(id: string): Promise<CardModel> {
+  remove(id: string): Promise<CardModel> {
     const message = `CardsRepository.remove() id=${id}}`;
     this.logger.log(message);
-
-    // fetch cards
-    const card = await CardModel.query().findById(id).select('columnId');
-    const cards = await CardModel.query()
-      .where({ columnId: card.columnId })
-      .select('id', 'order')
-      .orderBy('order');
-
-    // find index of card to update
-    const index = cards.findIndex((card) => card.id === id);
-
-    // update orders
-    for (let i = index + 1; i < cards.length; ++i) {
-      await CardModel.query()
-        .patch({ order: cards[i].order - 1 })
-        .where('id', cards[i].id);
-    }
-
     return CardModel.query().deleteById(id).returning('*').first();
   }
 }
