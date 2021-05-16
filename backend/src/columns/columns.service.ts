@@ -16,9 +16,7 @@ export class ColumnsService {
       createColumnDto,
     )}`;
     this.logger.log(message);
-    const column = new ColumnModel();
-    column.name = createColumnDto.name;
-    return this.columnsRepository.create(column);
+    return this.columnsRepository.create(createColumnDto);
   }
 
   findAll(): Promise<ColumnModel[]> {
@@ -33,21 +31,70 @@ export class ColumnsService {
     return this.columnsRepository.findOne(id);
   }
 
-  update(id: string, updateColumnDto: UpdateColumnDto): Promise<ColumnModel> {
+  async update(
+    id: string,
+    updateColumnDto: UpdateColumnDto,
+  ): Promise<ColumnModel> {
     const message = `ColumnsService.update() id=${id} updateColumnDto=${JSON.stringify(
       updateColumnDto,
     )}`;
     this.logger.log(message);
+
     if (updateColumnDto.order !== undefined) {
-      return this.columnsRepository.updateWithOrder(id, updateColumnDto);
-    } else {
-      return this.columnsRepository.updateWithOutOrder(id, updateColumnDto);
+      // fetch columns
+      const columns = await this.columnsRepository.findWithSelectAndOrder();
+
+      // find index of column to update
+      const index = columns.findIndex((column) => column.id === id);
+
+      // adjust order to fit between 1 <= order <= columns.length
+      if (updateColumnDto.order < 1) {
+        updateColumnDto.order = 1;
+      } else if (updateColumnDto.order > columns.length) {
+        updateColumnDto.order = columns.length;
+      }
+
+      // update orders of other columns
+      if (updateColumnDto.order < columns[index].order) {
+        for (let i = updateColumnDto.order - 1; i < index; ++i) {
+          await this.columnsRepository.updateOrder(
+            columns[i].id,
+            columns[i].order + 1,
+          );
+        }
+      } else if (updateColumnDto.order > columns[index].order) {
+        for (let i = updateColumnDto.order - 1; i > index; --i) {
+          await this.columnsRepository.updateOrder(
+            columns[i].id,
+            columns[i].order - 1,
+          );
+        }
+      }
     }
+
+    // update column
+    return this.columnsRepository.update(id, updateColumnDto);
   }
 
-  remove(id: string): Promise<ColumnModel> {
+  async remove(id: string): Promise<ColumnModel> {
     const message = `ColumnsService.remove() id=${id}`;
     this.logger.log(message);
+
+    // fetch columns
+    const columns = await this.columnsRepository.findWithSelectAndOrder();
+
+    // find index of column to update
+    const index = columns.findIndex((column) => column.id === id);
+
+    // update orders of other columns
+    for (let i = index + 1; i < columns.length; ++i) {
+      await this.columnsRepository.updateOrder(
+        columns[i].id,
+        columns[i].order - 1,
+      );
+    }
+
+    // remove column
     return this.columnsRepository.remove(id);
   }
 }
