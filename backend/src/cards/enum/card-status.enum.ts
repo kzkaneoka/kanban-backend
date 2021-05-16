@@ -1,6 +1,6 @@
 export enum CardStatusEnum {
-  TODO = 'TODO',
-  IN_PROGRESS = 'IN_PROGRESS',
-  DONE = 'DONE',
-  ARCHIVED = 'ARCHIVED',
+  TODO = 'todo',
+  IN_PROGRESS = 'in_progress',
+  DONE = 'done',
+  ARCHIVED = 'archived',
 }

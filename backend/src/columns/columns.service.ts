@@ -12,7 +12,7 @@ export class ColumnsService {
   ) {}
 
   create(createColumnDto: CreateColumnDto): Promise<ColumnModel> {
-    const message = `ColumnsService.create() data=${JSON.stringify(
+    const message = `ColumnsService.create() createColumnDto=${JSON.stringify(
       createColumnDto,
     )}`;
     this.logger.log(message);
@@ -34,7 +34,7 @@ export class ColumnsService {
   }
 
   update(id: string, updateColumnDto: UpdateColumnDto): Promise<ColumnModel> {
-    const message = `ColumnsService.update() id=${id} data=${JSON.stringify(
+    const message = `ColumnsService.update() id=${id} updateColumnDto=${JSON.stringify(
       updateColumnDto,
     )}`;
     this.logger.log(message);

@@ -7,7 +7,9 @@ export class ColumnsRepository {
   constructor(private readonly logger: Logger) {}
 
   async create(column: ColumnModel): Promise<ColumnModel> {
-    const message = `ColumnsRepository.create() data=${JSON.stringify(column)}`;
+    const message = `ColumnsRepository.create() column=${JSON.stringify(
+      column,
+    )}`;
     this.logger.log(message);
     const size = await ColumnModel.query().resultSize();
     return ColumnModel.query()

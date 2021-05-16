@@ -12,7 +12,7 @@ export class CardsService {
   ) {}
 
   create(createCardDto: CreateCardDto): Promise<CardModel> {
-    const message = `CardsService.create() data=${JSON.stringify(
+    const message = `CardsService.create() createCardDto=${JSON.stringify(
       createCardDto,
     )}`;
     this.logger.log(message);
@@ -36,7 +36,7 @@ export class CardsService {
   }
 
   update(id: string, updateCardDto: UpdateCardDto): Promise<CardModel> {
-    const message = `CardsService.update() id=${id} data=${JSON.stringify(
+    const message = `CardsService.update() id=${id} updateCardDto=${JSON.stringify(
       updateCardDto,
     )}`;
     this.logger.log(message);

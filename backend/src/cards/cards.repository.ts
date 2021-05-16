@@ -7,7 +7,7 @@ export class CardsRepository {
   constructor(private readonly logger: Logger) {}
 
   async create(card: CardModel): Promise<CardModel> {
-    const message = `CardsRepository.create() data=${JSON.stringify(card)}`;
+    const message = `CardsRepository.create() card=${JSON.stringify(card)}`;
     this.logger.log(message);
     const size = await CardModel.query()
       .where({ columnId: card.columnId })
