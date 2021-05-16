@@ -15,8 +15,10 @@ export async function up(knex: Knex): Promise<void> {
               useNative: true,
               enumName: 'card_status',
             })
-            .defaultTo('todo');
-          table.uuid('column_id').references('columns.id');
+            .defaultTo('todo')
+            .notNullable();
+          table.uuid('user_id').references('users.id').notNullable();
+          table.uuid('column_id').references('columns.id').notNullable();
           table.timestamps(true, true);
         });
     }
@@ -24,7 +26,5 @@ export async function up(knex: Knex): Promise<void> {
 }
 
 export async function down(knex: Knex): Promise<void> {
-  return knex.schema
-    .dropTableIfExists('cards')
-    .dropSchemaIfExists('card_status');
+  return knex.schema.dropTableIfExists('cards').raw('DROP TYPE card_status');
 }
