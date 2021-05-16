@@ -12,7 +12,7 @@ Kanban backend is a Trello backend clone in NestJS.
 - [x] TypeScript
 - [x] Logger
 - [x] Validation
-- [ ] Error Handling
+- [x] Error Handling
 - [ ] Auth
 - [ ] Test
 - [ ] Swagger
@@ -22,8 +22,20 @@ Kanban backend is a Trello backend clone in NestJS.
 ## Install
 
 ```bash
-# install dependencies
 $ npm install
+```
+
+## Setup Database
+
+```bash
+$ docker run --rm --name pg-docker -e POSTGRES_PASSWORD=postgres -d -p 5432:5432 postgres:13.2-alpine
+$ docker exec -it pg-docker bash
+$ psql -U postgres
+$ CREATE DATABASE kanban_dev;
+$ \q
+$ exit
+$ npx knex migrate:latest
+$ npx knex seed:run
 ```
 
 ## Run
@@ -56,15 +68,7 @@ $ npm run test:cov
 
 ![Screenshot](/db-design.png)
 
-### Model: Column
-
-- Fields: ID, Name, Order
-
-### Model: Card
-
-- Fields: ID, Column ID, Name, Description, Created date, Updated date, Order, Status(for archiving)
-
-### User Stories
+## User Stories
 
 User can add/update column with name
 

@@ -6,6 +6,7 @@ import { ColumnModel } from '../../columns/models/column.model';
 export class UserModel extends Model {
   id: string;
   username: string;
+  email: string;
   password: string;
   role: UserRoleEnum;
   createdAt: Date;
@@ -26,6 +27,7 @@ export class UserModel extends Model {
       properties: {
         id: { type: 'uuid' },
         username: { type: 'string', minLength: 4, maxLength: 16 },
+        email: { type: 'string' },
         password: { type: 'string', minLength: 4, maxLength: 16 },
         role: {
           type: 'user_role',
