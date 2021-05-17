@@ -7,15 +7,23 @@ import { ColumnModel } from './models/column.model';
 export class ColumnsRepository {
   constructor(private readonly logger: Logger) {}
 
-  async create(createColumnDto: CreateColumnDto): Promise<ColumnModel> {
+  create(
+    createColumnDto: CreateColumnDto,
+    order: number,
+  ): Promise<ColumnModel> {
     const message = `ColumnsRepository.create() column=${JSON.stringify(
       createColumnDto,
-    )}`;
+    )} order=${order}`;
     this.logger.log(message);
-    const size = await ColumnModel.query().resultSize();
     return ColumnModel.query()
-      .insert({ ...createColumnDto, order: size + 1 })
+      .insert({ ...createColumnDto, order })
       .returning('*');
+  }
+
+  size(): Promise<number> {
+    const message = 'ColumnsRepository.size()';
+    this.logger.log(message);
+    return ColumnModel.query().resultSize();
   }
 
   findAll(): Promise<ColumnModel[]> {

@@ -7,17 +7,20 @@ import { CardModel } from './models/card.model';
 export class CardsRepository {
   constructor(private readonly logger: Logger) {}
 
-  async create(createCardDto: CreateCardDto): Promise<CardModel> {
+  create(createCardDto: CreateCardDto, order: number): Promise<CardModel> {
     const message = `CardsRepository.create() card=${JSON.stringify(
       createCardDto,
-    )}`;
+    )} order=${order}`;
     this.logger.log(message);
-    const size = await CardModel.query()
-      .where({ columnId: createCardDto.columnId })
-      .resultSize();
     return CardModel.query()
-      .insert({ ...createCardDto, order: size + 1 })
+      .insert({ ...createCardDto, order })
       .returning('*');
+  }
+
+  size(columnId: string): Promise<number> {
+    const message = `CardsRepository.size() columnId=${columnId}`;
+    this.logger.log(message);
+    return CardModel.query().where({ columnId }).resultSize();
   }
 
   findAll(): Promise<CardModel[]> {
