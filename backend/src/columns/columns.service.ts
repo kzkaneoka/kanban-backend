@@ -7,8 +7,8 @@ import { ColumnModel } from './models/column.model';
 @Injectable()
 export class ColumnsService {
   constructor(
-    private readonly columnsRepository: ColumnsRepository,
     private readonly logger: Logger,
+    private readonly columnsRepository: ColumnsRepository,
   ) {}
 
   async create(createColumnDto: CreateColumnDto): Promise<ColumnModel> {

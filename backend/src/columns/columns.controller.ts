@@ -17,8 +17,8 @@ import { ColumnModel } from './models/column.model';
 @Controller('columns')
 export class ColumnsController {
   constructor(
-    private columnsService: ColumnsService,
     private readonly logger: Logger,
+    private readonly columnsService: ColumnsService,
   ) {}
 
   @Post()

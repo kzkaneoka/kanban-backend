@@ -7,8 +7,8 @@ import { CardModel } from './models/card.model';
 @Injectable()
 export class CardsService {
   constructor(
-    private readonly cardsRepository: CardsRepository,
     private readonly logger: Logger,
+    private readonly cardsRepository: CardsRepository,
   ) {}
 
   async create(createCardDto: CreateCardDto): Promise<CardModel> {

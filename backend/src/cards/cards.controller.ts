@@ -17,8 +17,8 @@ import { CardModel } from './models/card.model';
 @Controller('cards')
 export class CardsController {
   constructor(
-    private readonly cardsService: CardsService,
     private readonly logger: Logger,
+    private readonly cardsService: CardsService,
   ) {}
 
   @Post()
