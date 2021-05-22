@@ -7,9 +7,9 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { Public } from 'src/auth/decorators/access.decorator';
 import { UserModel } from 'src/users/models/user.model';
 import { AuthService } from './auth.service';
-import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -19,6 +19,7 @@ export class AuthController {
   ) {}
 
   @Post('login')
+  @Public()
   @UseGuards(AuthGuard('local'))
   login(@Request() req): Promise<any> {
     const message = `AuthController.login() user=${JSON.stringify(req.user)}`;
@@ -27,7 +28,6 @@ export class AuthController {
   }
 
   @Get('profile')
-  @UseGuards(JwtAuthGuard)
   profile(@Request() req): Promise<UserModel> {
     const message = `AuthController.profile() user=${JSON.stringify(req.user)}`;
     this.logger.log(message);

@@ -9,7 +9,7 @@ import { LocalStrategy } from './strategies/local.strategy';
 
 @Module({
   imports: [
-    JwtModule.register({ secret: 'secret', signOptions: { expiresIn: '15s' } }),
+    JwtModule.register({ secret: 'secret', signOptions: { expiresIn: '30s' } }),
     PassportModule,
     UsersModule,
   ],

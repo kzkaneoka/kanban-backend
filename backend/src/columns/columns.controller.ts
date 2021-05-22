@@ -9,6 +9,7 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
+import { Public } from 'src/auth/decorators/access.decorator';
 import { ColumnsService } from './columns.service';
 import { CreateColumnDto } from './dto/create-column.dto';
 import { UpdateColumnDto } from './dto/update-column.dto';
@@ -31,6 +32,7 @@ export class ColumnsController {
   }
 
   @Get()
+  @Public()
   findAll(): Promise<ColumnModel[]> {
     const message = 'ColumnsController.findAll()';
     this.logger.log(message);
@@ -38,6 +40,7 @@ export class ColumnsController {
   }
 
   @Get(':id')
+  @Public()
   findOne(@Param('id', ParseUUIDPipe) id: string): Promise<ColumnModel> {
     const message = `ColumnsController.findOne() id=${id}`;
     this.logger.log(message);

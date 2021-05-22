@@ -9,6 +9,7 @@ import {
   Delete,
   Put,
 } from '@nestjs/common';
+import { Public } from 'src/auth/decorators/access.decorator';
 import { CardsService } from './cards.service';
 import { CreateCardDto } from './dto/create-card.dto';
 import { UpdateCardDto } from './dto/update-card.dto';
@@ -31,6 +32,7 @@ export class CardsController {
   }
 
   @Get()
+  @Public()
   findAll(): Promise<CardModel[]> {
     const message = 'CardsController.findAll()';
     this.logger.log(message);
@@ -38,6 +40,7 @@ export class CardsController {
   }
 
   @Get(':id')
+  @Public()
   findOne(@Param('id', ParseUUIDPipe) id: string): Promise<CardModel> {
     const message = `CardsController.findOne() id=${id}`;
     this.logger.log(message);
