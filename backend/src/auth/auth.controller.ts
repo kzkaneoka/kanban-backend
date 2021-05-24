@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   Get,
   Logger,
@@ -8,6 +9,7 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Public } from 'src/auth/decorators/public-auth.decorator';
+import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { UserModel } from 'src/users/models/user.model';
 import { AuthService } from './auth.service';
 
@@ -17,6 +19,16 @@ export class AuthController {
     private readonly logger: Logger,
     private readonly authService: AuthService,
   ) {}
+
+  @Post('signup')
+  @Public()
+  signup(@Body() createUserDto: CreateUserDto): Promise<UserModel> {
+    const message = `AuthController.signup() createUserDto=${JSON.stringify(
+      createUserDto,
+    )}`;
+    this.logger.log(message);
+    return this.authService.signup(createUserDto);
+  }
 
   @Post('login')
   @Public()

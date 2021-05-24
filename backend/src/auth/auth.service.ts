@@ -1,5 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { UserModel } from 'src/users/models/user.model';
 import { UsersService } from 'src/users/users.service';
 
@@ -20,6 +21,14 @@ export class AuthService {
       return user;
     }
     return null;
+  }
+
+  async signup(createUserDto: CreateUserDto): Promise<UserModel> {
+    const message = `AuthService.signup() createUserDto=${JSON.stringify(
+      createUserDto,
+    )}`;
+    this.logger.log(message);
+    return this.usersService.create(createUserDto);
   }
 
   async login(user: UserModel): Promise<any> {
