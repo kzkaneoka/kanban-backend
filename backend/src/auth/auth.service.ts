@@ -38,4 +38,10 @@ export class AuthService {
     const token = await this.jwtService.sign(payload);
     return { user, token };
   }
+
+  findOne(id: string): Promise<UserModel> {
+    const message = `AuthService.findOne() id=${id}`;
+    this.logger.log(message);
+    return this.usersService.findOne(id);
+  }
 }
