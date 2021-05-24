@@ -61,4 +61,11 @@ export class UserModel extends Model {
       },
     };
   }
+
+  $formatJson(json) {
+    json = super.$formatJson(json);
+    delete json.password;
+    delete json.role;
+    return json;
+  }
 }
