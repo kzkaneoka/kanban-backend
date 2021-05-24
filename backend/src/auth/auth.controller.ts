@@ -7,7 +7,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { Public } from 'src/auth/decorators/access.decorator';
+import { Public } from 'src/auth/decorators/public-auth.decorator';
 import { UserModel } from 'src/users/models/user.model';
 import { AuthService } from './auth.service';
 
