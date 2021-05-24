@@ -1,5 +1,5 @@
 import { Model } from 'objection';
-import { UserRole } from '../enum/user-role.enum';
+import { Role } from '../enum/role.enum';
 import { CardModel } from '../../cards/models/card.model';
 import { ColumnModel } from '../../columns/models/column.model';
 
@@ -8,7 +8,7 @@ export class UserModel extends Model {
   username: string;
   email: string;
   password: string;
-  role: UserRole;
+  role: Role;
   createdAt: Date;
   updatedAt: Date;
 

@@ -13,7 +13,7 @@ export async function up(knex: Knex): Promise<void> {
           table
             .enu('role', ['admin', 'user'], {
               useNative: true,
-              enumName: 'user_role',
+              enumName: 'role',
             })
             .defaultTo('user')
             .notNullable();
@@ -24,5 +24,5 @@ export async function up(knex: Knex): Promise<void> {
 }
 
 export async function down(knex: Knex): Promise<void> {
-  return knex.schema.dropTableIfExists('users').raw('DROP TYPE user_role');
+  return knex.schema.dropTableIfExists('users').raw('DROP TYPE role');
 }
