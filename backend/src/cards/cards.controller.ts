@@ -10,6 +10,8 @@ import {
   Put,
 } from '@nestjs/common';
 import { Public } from 'src/auth/decorators/public-auth.decorator';
+import { Roles } from 'src/auth/decorators/role.decorator';
+import { Role } from 'src/users/enum/role.enum';
 import { CardsService } from './cards.service';
 import { CreateCardDto } from './dto/create-card.dto';
 import { UpdateCardDto } from './dto/update-card.dto';
@@ -23,6 +25,7 @@ export class CardsController {
   ) {}
 
   @Post()
+  @Roles([Role.ADMIN, Role.USER])
   create(@Body() createCardDto: CreateCardDto): Promise<CardModel> {
     const message = `CardsController.create() createCardDto=${JSON.stringify(
       createCardDto,
@@ -48,6 +51,7 @@ export class CardsController {
   }
 
   @Put(':id')
+  @Roles([Role.ADMIN, Role.USER])
   update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateCardDto: UpdateCardDto,
@@ -60,6 +64,7 @@ export class CardsController {
   }
 
   @Delete(':id')
+  @Roles([Role.ADMIN, Role.USER])
   remove(@Param('id', ParseUUIDPipe) id: string): Promise<CardModel> {
     const message = `CardsController.remove() id=${id}`;
     this.logger.log(message);

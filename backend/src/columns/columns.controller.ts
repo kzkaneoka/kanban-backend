@@ -10,6 +10,8 @@ import {
   Put,
 } from '@nestjs/common';
 import { Public } from 'src/auth/decorators/public-auth.decorator';
+import { Roles } from 'src/auth/decorators/role.decorator';
+import { Role } from 'src/users/enum/role.enum';
 import { ColumnsService } from './columns.service';
 import { CreateColumnDto } from './dto/create-column.dto';
 import { UpdateColumnDto } from './dto/update-column.dto';
@@ -23,6 +25,7 @@ export class ColumnsController {
   ) {}
 
   @Post()
+  @Roles([Role.USER, Role.USER])
   create(@Body() createColumnDto: CreateColumnDto): Promise<ColumnModel> {
     const message = `ColumnsController.create() createColumnDto=${JSON.stringify(
       createColumnDto,
@@ -48,6 +51,7 @@ export class ColumnsController {
   }
 
   @Put(':id')
+  @Roles([Role.USER, Role.USER])
   update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateColumnDto: UpdateColumnDto,
@@ -60,6 +64,7 @@ export class ColumnsController {
   }
 
   @Delete(':id')
+  @Roles([Role.USER, Role.USER])
   remove(@Param('id', ParseUUIDPipe) id: string): Promise<ColumnModel> {
     const message = `ColumnsController.remove() id=${id}`;
     this.logger.log(message);

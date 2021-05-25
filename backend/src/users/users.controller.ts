@@ -13,6 +13,8 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserModel } from './models/user.model';
+import { Roles } from 'src/auth/decorators/role.decorator';
+import { Role } from './enum/role.enum';
 
 @Controller('users')
 export class UsersController {
@@ -31,6 +33,7 @@ export class UsersController {
   }
 
   @Get()
+  @Roles([Role.ADMIN, Role.USER])
   findAll(): Promise<UserModel[]> {
     const message = 'UsersController.findAll()';
     this.logger.log(message);
@@ -38,6 +41,7 @@ export class UsersController {
   }
 
   @Get(':id')
+  @Roles([Role.ADMIN, Role.USER])
   findOne(@Param('id', ParseUUIDPipe) id: string): Promise<UserModel> {
     const message = `UsersController.findOne() id=${id}`;
     this.logger.log(message);
@@ -45,6 +49,7 @@ export class UsersController {
   }
 
   @Put(':id')
+  @Roles([Role.ADMIN, Role.USER])
   update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateUserDto: UpdateUserDto,
@@ -53,10 +58,11 @@ export class UsersController {
       updateUserDto,
     )}`;
     this.logger.log(message);
-    return this.usersService.findOne(id);
+    return this.usersService.update(id, updateUserDto);
   }
 
   @Delete(':id')
+  @Roles([Role.ADMIN, Role.USER])
   remove(@Param('id', ParseUUIDPipe) id: string): Promise<UserModel> {
     const message = `UsersController.remove() id=${id}`;
     this.logger.log(message);
