@@ -1,4 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
+import { hashSync } from 'bcrypt';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserModel } from './models/user.model';
@@ -11,11 +12,12 @@ export class UsersService {
     private readonly usersRepository: UsersRepository,
   ) {}
 
-  create(createUserDto: CreateUserDto): Promise<UserModel> {
+  async create(createUserDto: CreateUserDto): Promise<UserModel> {
     const message = `UsersService.create() createUserDto=${JSON.stringify(
       createUserDto,
     )}`;
     this.logger.log(message);
+    createUserDto.password = await hashSync(createUserDto.password, 10);
     return this.usersRepository.create(createUserDto);
   }
 
@@ -37,11 +39,14 @@ export class UsersService {
     return this.usersRepository.findByUsername(username);
   }
 
-  update(id: string, updateUserDto: UpdateUserDto): Promise<UserModel> {
+  async update(id: string, updateUserDto: UpdateUserDto): Promise<UserModel> {
     const message = `UsersService.update() id=${id} updateUserDto=${JSON.stringify(
       updateUserDto,
     )}`;
     this.logger.log(message);
+    if (updateUserDto.password !== undefined) {
+      updateUserDto.password = await hashSync(updateUserDto.password, 10);
+    }
     return this.usersRepository.update(id, updateUserDto);
   }
 

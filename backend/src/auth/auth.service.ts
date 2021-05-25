@@ -1,5 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { compareSync } from 'bcrypt';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { UserModel } from 'src/users/models/user.model';
 import { UsersService } from 'src/users/users.service';
@@ -16,7 +17,7 @@ export class AuthService {
     const message = `AuthService.validate() username=${username} password=${password}`;
     this.logger.log(message);
     const user = await this.usersService.findByUsername(username);
-    if (user && user.password === password) {
+    if (user && compareSync(password, user.password)) {
       delete user.password;
       return user;
     }
