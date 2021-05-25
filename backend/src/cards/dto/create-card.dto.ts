@@ -13,9 +13,5 @@ export class CreateCardDto {
 
   @IsString()
   @IsDefined()
-  userId: string;
-
-  @IsString()
-  @IsDefined()
   columnId: string;
 }

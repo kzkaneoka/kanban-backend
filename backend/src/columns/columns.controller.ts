@@ -8,6 +8,7 @@ import {
   ParseUUIDPipe,
   Post,
   Put,
+  Request,
 } from '@nestjs/common';
 import { Public } from 'src/auth/decorators/public-auth.decorator';
 import { Roles } from 'src/auth/decorators/role.decorator';
@@ -26,12 +27,15 @@ export class ColumnsController {
 
   @Post()
   @Roles([Role.USER, Role.USER])
-  create(@Body() createColumnDto: CreateColumnDto): Promise<ColumnModel> {
+  create(
+    @Request() req,
+    @Body() createColumnDto: CreateColumnDto,
+  ): Promise<ColumnModel> {
     const message = `ColumnsController.create() createColumnDto=${JSON.stringify(
       createColumnDto,
-    )}`;
+    )} userId=${req.user.id}`;
     this.logger.log(message);
-    return this.columnsService.create(createColumnDto);
+    return this.columnsService.create(createColumnDto, req.user.id);
   }
 
   @Get()

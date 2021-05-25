@@ -9,14 +9,15 @@ export class ColumnsRepository {
 
   create(
     createColumnDto: CreateColumnDto,
+    userId: string,
     order: number,
   ): Promise<ColumnModel> {
-    const message = `ColumnsRepository.create() column=${JSON.stringify(
+    const message = `ColumnsRepository.create() createColumnDto=${JSON.stringify(
       createColumnDto,
-    )} order=${order}`;
+    )} userId=${userId} order=${order}`;
     this.logger.log(message);
     return ColumnModel.query()
-      .insert({ ...createColumnDto, order })
+      .insert({ ...createColumnDto, userId, order })
       .returning('*');
   }
 

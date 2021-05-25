@@ -11,17 +11,20 @@ export class CardsService {
     private readonly cardsRepository: CardsRepository,
   ) {}
 
-  async create(createCardDto: CreateCardDto): Promise<CardModel> {
+  async create(
+    createCardDto: CreateCardDto,
+    userId: string,
+  ): Promise<CardModel> {
     const message = `CardsService.create() createCardDto=${JSON.stringify(
       createCardDto,
-    )}`;
+    )} userId=${userId}`;
     this.logger.log(message);
 
     // size of cards with same columnId
     const size = await this.cardsRepository.size(createCardDto.columnId);
 
     // create card with order = size + 1
-    return this.cardsRepository.create(createCardDto, size + 1);
+    return this.cardsRepository.create(createCardDto, userId, size + 1);
   }
 
   findAll(): Promise<CardModel[]> {

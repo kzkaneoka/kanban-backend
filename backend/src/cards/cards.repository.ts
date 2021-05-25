@@ -7,13 +7,17 @@ import { CardModel } from './models/card.model';
 export class CardsRepository {
   constructor(private readonly logger: Logger) {}
 
-  create(createCardDto: CreateCardDto, order: number): Promise<CardModel> {
+  create(
+    createCardDto: CreateCardDto,
+    userId: string,
+    order: number,
+  ): Promise<CardModel> {
     const message = `CardsRepository.create() card=${JSON.stringify(
       createCardDto,
-    )} order=${order}`;
+    )} userId=${userId} order=${order}`;
     this.logger.log(message);
     return CardModel.query()
-      .insert({ ...createCardDto, order })
+      .insert({ ...createCardDto, userId, order })
       .returning('*');
   }
 

@@ -8,6 +8,7 @@ import {
   Param,
   Delete,
   Put,
+  Request,
 } from '@nestjs/common';
 import { Public } from 'src/auth/decorators/public-auth.decorator';
 import { Roles } from 'src/auth/decorators/role.decorator';
@@ -26,12 +27,15 @@ export class CardsController {
 
   @Post()
   @Roles([Role.ADMIN, Role.USER])
-  create(@Body() createCardDto: CreateCardDto): Promise<CardModel> {
+  create(
+    @Request() req,
+    @Body() createCardDto: CreateCardDto,
+  ): Promise<CardModel> {
     const message = `CardsController.create() createCardDto=${JSON.stringify(
       createCardDto,
-    )}`;
+    )} userId=${req.user.id}`;
     this.logger.log(message);
-    return this.cardsService.create(createCardDto);
+    return this.cardsService.create(createCardDto, req.user.id);
   }
 
   @Get()

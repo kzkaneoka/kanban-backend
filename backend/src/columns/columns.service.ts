@@ -11,17 +11,20 @@ export class ColumnsService {
     private readonly columnsRepository: ColumnsRepository,
   ) {}
 
-  async create(createColumnDto: CreateColumnDto): Promise<ColumnModel> {
+  async create(
+    createColumnDto: CreateColumnDto,
+    userId: string,
+  ): Promise<ColumnModel> {
     const message = `ColumnsService.create() createColumnDto=${JSON.stringify(
       createColumnDto,
-    )}`;
+    )} userId=${userId}`;
     this.logger.log(message);
 
     // size of columns
     const size = await this.columnsRepository.size();
 
     // create column with order = size + 1
-    return this.columnsRepository.create(createColumnDto, size + 1);
+    return this.columnsRepository.create(createColumnDto, userId, size + 1);
   }
 
   findAll(): Promise<ColumnModel[]> {
