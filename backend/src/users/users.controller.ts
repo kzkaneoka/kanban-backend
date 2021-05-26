@@ -33,7 +33,7 @@ export class UsersController {
   }
 
   @Get()
-  @Roles([Role.ADMIN, Role.USER])
+  @Roles([Role.ADMIN])
   findAll(): Promise<UserModel[]> {
     const message = 'UsersController.findAll()';
     this.logger.log(message);
