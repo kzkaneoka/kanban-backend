@@ -1,6 +1,4 @@
 import { Logger, Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { CardsModule } from './cards/cards.module';
 import { ColumnsModule } from './columns/columns.module';
 import { DatabaseModule } from './db/db.module';
@@ -18,10 +16,8 @@ import { RolesGuard } from './auth/guards/roles.guard';
     DatabaseModule,
     UsersModule,
   ],
-  controllers: [AppController],
   providers: [
     Logger,
-    AppService,
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,

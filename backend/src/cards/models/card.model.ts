@@ -1,6 +1,6 @@
 import { Model } from 'objection';
 import { ColumnModel } from 'src/columns/models/column.model';
-import { CardStatusEnum } from '../enum/card-status.enum';
+import { Status } from '../enum/status.enum';
 import { UserModel } from 'src/users/models/user.model';
 
 export class CardModel extends Model {
@@ -8,7 +8,7 @@ export class CardModel extends Model {
   name: string;
   description: string;
   order: number;
-  status: CardStatusEnum;
+  status: Status;
   userId: string;
   columnId: string;
   createdAt: Date;

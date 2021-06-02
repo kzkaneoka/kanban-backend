@@ -15,11 +15,12 @@ Kanban backend is a Trello backend clone in NestJS.
 - [x] Error Handling
 - [x] Auth
 - [ ] Test
-- [ ] Swagger
+- [x] Swagger Documentation
 - [x] SQL
 - [ ] Docker
 - [ ] Email Confirmation
 - [ ] Config
+- [ ] CI/CD
 
 ## Install
 
@@ -87,3 +88,7 @@ User can identify / switch status of card
 User can update card order
 
 User can archive card
+
+## API Documentation
+
+After running nest js app, visit [http://localhost:3000/api/v1/docs](http://localhost:3000/api/docs).

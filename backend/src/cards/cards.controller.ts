@@ -10,6 +10,7 @@ import {
   Put,
   Request,
 } from '@nestjs/common';
+import { ApiBearerAuth, ApiParam, ApiTags } from '@nestjs/swagger';
 import { Public } from 'src/auth/decorators/public-auth.decorator';
 import { Roles } from 'src/auth/decorators/role.decorator';
 import { Role } from 'src/users/enum/role.enum';
@@ -19,6 +20,7 @@ import { UpdateCardDto } from './dto/update-card.dto';
 import { CardModel } from './models/card.model';
 
 @Controller('cards')
+@ApiTags('cards')
 export class CardsController {
   constructor(
     private readonly logger: Logger,
@@ -27,6 +29,7 @@ export class CardsController {
 
   @Post()
   @Roles([Role.ADMIN, Role.USER])
+  @ApiBearerAuth()
   create(
     @Request() req,
     @Body() createCardDto: CreateCardDto,
@@ -48,6 +51,11 @@ export class CardsController {
 
   @Get(':id')
   @Public()
+  @ApiParam({
+    name: 'id',
+    description: 'UUID for a particular card',
+    example: '9b478b84-80b3-4e1d-ade5-13d81f0a789c',
+  })
   findOne(@Param('id', ParseUUIDPipe) id: string): Promise<CardModel> {
     const message = `CardsController.findOne() id=${id}`;
     this.logger.log(message);
@@ -56,6 +64,12 @@ export class CardsController {
 
   @Put(':id')
   @Roles([Role.ADMIN, Role.USER])
+  @ApiBearerAuth()
+  @ApiParam({
+    name: 'id',
+    description: 'UUID for a particular card',
+    example: '9b478b84-80b3-4e1d-ade5-13d81f0a789c',
+  })
   update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateCardDto: UpdateCardDto,
@@ -68,7 +82,13 @@ export class CardsController {
   }
 
   @Delete(':id')
+  @ApiParam({
+    name: 'id',
+    description: 'UUID for a particular card',
+    example: '9b478b84-80b3-4e1d-ade5-13d81f0a789c',
+  })
   @Roles([Role.ADMIN, Role.USER])
+  @ApiBearerAuth()
   remove(@Param('id', ParseUUIDPipe) id: string): Promise<CardModel> {
     const message = `CardsController.remove() id=${id}`;
     this.logger.log(message);

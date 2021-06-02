@@ -23,7 +23,7 @@ export class CustomExceptionFilter implements ExceptionFilter {
 
     this.logger.error(`${request.url} ${exception}`);
 
-    const status =
+    let status =
       exception instanceof HttpException
         ? exception.getStatus()
         : HttpStatus.INTERNAL_SERVER_ERROR;
@@ -35,6 +35,7 @@ export class CustomExceptionFilter implements ExceptionFilter {
       message = exception.message;
     } else if (exception instanceof UniqueViolationError) {
       message = `${exception.columns} is already taken`;
+      status = HttpStatus.BAD_REQUEST;
     } else if (exception instanceof ForbiddenException) {
       message = exception.message;
     } else if (exception instanceof NotFoundException) {

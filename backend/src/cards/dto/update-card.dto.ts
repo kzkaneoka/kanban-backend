@@ -1,12 +1,20 @@
-import { PartialType } from '@nestjs/mapped-types';
+import { PartialType } from '@nestjs/swagger';
 import { IsEnum, IsInt } from 'class-validator';
-import { CardStatusEnum } from '../enum/card-status.enum';
+import { Status } from '../enum/status.enum';
 import { CreateCardDto } from './create-card.dto';
 
 export class UpdateCardDto extends PartialType(CreateCardDto) {
+  /**
+   * This is order property.
+   * @example '1'
+   */
   @IsInt()
-  order: number;
+  order?: number;
 
-  @IsEnum(CardStatusEnum)
-  status: CardStatusEnum;
+  /**
+   * This is status property.
+   * @example 'todo'
+   */
+  @IsEnum(Status)
+  status?: Status;
 }

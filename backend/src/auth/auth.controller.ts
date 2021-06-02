@@ -8,12 +8,14 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 import { Public } from 'src/auth/decorators/public-auth.decorator';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { UserModel } from 'src/users/models/user.model';
 import { AuthService } from './auth.service';
 
 @Controller('auth')
+@ApiTags('auth')
 export class AuthController {
   constructor(
     private readonly logger: Logger,
@@ -33,6 +35,23 @@ export class AuthController {
   @Post('login')
   @Public()
   @UseGuards(AuthGuard('local'))
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        username: {
+          type: 'string',
+          description: 'Username for login.',
+          example: 'user1',
+        },
+        password: {
+          type: 'string',
+          description: 'Password for login.',
+          example: '123456',
+        },
+      },
+    },
+  })
   login(@Request() req): Promise<any> {
     const message = `AuthController.login() user=${JSON.stringify(req.user)}`;
     this.logger.log(message);
@@ -40,6 +59,7 @@ export class AuthController {
   }
 
   @Get('profile')
+  @ApiBearerAuth()
   profile(@Request() req): Promise<UserModel> {
     const message = `AuthController.profile() user=${JSON.stringify(req.user)}`;
     this.logger.log(message);

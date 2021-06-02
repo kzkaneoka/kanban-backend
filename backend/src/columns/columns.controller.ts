@@ -10,6 +10,7 @@ import {
   Put,
   Request,
 } from '@nestjs/common';
+import { ApiBearerAuth, ApiParam, ApiTags } from '@nestjs/swagger';
 import { Public } from 'src/auth/decorators/public-auth.decorator';
 import { Roles } from 'src/auth/decorators/role.decorator';
 import { Role } from 'src/users/enum/role.enum';
@@ -19,6 +20,7 @@ import { UpdateColumnDto } from './dto/update-column.dto';
 import { ColumnModel } from './models/column.model';
 
 @Controller('columns')
+@ApiTags('columns')
 export class ColumnsController {
   constructor(
     private readonly logger: Logger,
@@ -27,6 +29,7 @@ export class ColumnsController {
 
   @Post()
   @Roles([Role.USER, Role.USER])
+  @ApiBearerAuth()
   create(
     @Request() req,
     @Body() createColumnDto: CreateColumnDto,
@@ -48,6 +51,11 @@ export class ColumnsController {
 
   @Get(':id')
   @Public()
+  @ApiParam({
+    name: 'id',
+    description: 'UUID for a particular column',
+    example: 'b02de89a-affe-4f7a-9473-bea67c104da8',
+  })
   findOne(@Param('id', ParseUUIDPipe) id: string): Promise<ColumnModel> {
     const message = `ColumnsController.findOne() id=${id}`;
     this.logger.log(message);
@@ -56,6 +64,12 @@ export class ColumnsController {
 
   @Put(':id')
   @Roles([Role.USER, Role.USER])
+  @ApiBearerAuth()
+  @ApiParam({
+    name: 'id',
+    description: 'UUID for a particular column',
+    example: 'b02de89a-affe-4f7a-9473-bea67c104da8',
+  })
   update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateColumnDto: UpdateColumnDto,
@@ -69,6 +83,12 @@ export class ColumnsController {
 
   @Delete(':id')
   @Roles([Role.USER, Role.USER])
+  @ApiBearerAuth()
+  @ApiParam({
+    name: 'id',
+    description: 'UUID for a particular column',
+    example: 'b02de89a-affe-4f7a-9473-bea67c104da8',
+  })
   remove(@Param('id', ParseUUIDPipe) id: string): Promise<ColumnModel> {
     const message = `ColumnsController.remove() id=${id}`;
     this.logger.log(message);
