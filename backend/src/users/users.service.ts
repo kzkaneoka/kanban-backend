@@ -2,6 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { hashSync } from 'bcrypt';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { Role } from './enum/role.enum';
 import { UserModel } from './models/user.model';
 import { UsersRepository } from './users.repository';
 
@@ -48,6 +49,12 @@ export class UsersService {
       updateUserDto.password = await hashSync(updateUserDto.password, 10);
     }
     return this.usersRepository.update(id, updateUserDto);
+  }
+
+  updateRole(id: string, role: Role): Promise<UserModel> {
+    const message = `UsersService.updateRole() id=${id} role=${role}`;
+    this.logger.log(message);
+    return this.usersRepository.updateRole(id, role);
   }
 
   remove(id: string): Promise<UserModel> {

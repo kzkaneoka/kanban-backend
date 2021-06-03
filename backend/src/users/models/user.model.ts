@@ -31,8 +31,8 @@ export class UserModel extends Model {
         password: { type: 'string', minLength: 4, maxLength: 64 },
         role: {
           type: 'user_role',
-          enum: ['user', 'admin'],
-          default: 'user',
+          enum: ['admin', 'user', 'guest'],
+          default: 'guest',
         },
         createdAt: { type: 'timestamp' },
         updatedAt: { type: 'timestamp' },

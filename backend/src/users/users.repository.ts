@@ -1,6 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { Role } from './enum/role.enum';
 import { UserModel } from './models/user.model';
 
 @Injectable()
@@ -42,6 +43,15 @@ export class UsersRepository {
     this.logger.log(message);
     return UserModel.query().updateAndFetchById(id, {
       ...updateUserDto,
+      updatedAt: new Date(),
+    });
+  }
+
+  updateRole(id: string, role: Role): Promise<UserModel> {
+    const message = `UsersRepository.updateRole() id=${id} role=${role}`;
+    this.logger.log(message);
+    return UserModel.query().updateAndFetchById(id, {
+      role,
       updatedAt: new Date(),
     });
   }

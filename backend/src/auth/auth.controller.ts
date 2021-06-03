@@ -4,6 +4,7 @@ import {
   Get,
   Logger,
   Post,
+  Query,
   Request,
   UseGuards,
 } from '@nestjs/common';
@@ -56,6 +57,19 @@ export class AuthController {
     const message = `AuthController.login() user=${JSON.stringify(req.user)}`;
     this.logger.log(message);
     return this.authService.login(req.user);
+  }
+
+  /**
+   * Token is generated when user signup and it will be expired in 15 mins.
+   * User needs to confirm its email in 15 mins.
+   * @param token
+   */
+  @Get('confirm')
+  @Public()
+  confirm(@Query('token') token: string): Promise<UserModel> {
+    const message = `AuthController.confirm() token=${token}`;
+    this.logger.log(message);
+    return this.authService.confirm(token);
   }
 
   @Get('profile')

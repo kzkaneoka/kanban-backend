@@ -18,7 +18,7 @@ Kanban backend is a Trello backend clone in NestJS.
 - [x] Swagger Documentation
 - [x] SQL
 - [ ] Docker
-- [ ] Email Confirmation
+- [x] Email Confirmation
 - [ ] Config
 - [ ] CI/CD
 

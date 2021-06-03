@@ -11,11 +11,11 @@ export async function up(knex: Knex): Promise<void> {
           table.string('email').notNullable().unique();
           table.string('password').notNullable();
           table
-            .enu('role', ['admin', 'user'], {
+            .enu('role', ['admin', 'user', 'guest'], {
               useNative: true,
               enumName: 'role',
             })
-            .defaultTo('user')
+            .defaultTo('guest')
             .notNullable();
           table.timestamps(true, true);
         });

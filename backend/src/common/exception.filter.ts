@@ -40,6 +40,9 @@ export class CustomExceptionFilter implements ExceptionFilter {
       message = exception.message;
     } else if (exception instanceof NotFoundException) {
       message = exception.message;
+    } else if (exception instanceof TypeError) {
+      message = exception.message;
+      status = HttpStatus.BAD_REQUEST;
     }
 
     response.status(status).json({
