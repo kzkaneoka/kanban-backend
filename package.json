@@ -1,5 +1,5 @@
 {
-  "name": "backend",
+  "name": "kanban-backend",
   "version": "0.0.1",
   "description": "",
   "author": "",
@@ -23,6 +23,7 @@
   "dependencies": {
     "@nestjs-modules/mailer": "^1.6.0",
     "@nestjs/common": "^7.6.15",
+    "@nestjs/config": "^0.6.3",
     "@nestjs/core": "^7.6.15",
     "@nestjs/jwt": "^7.2.0",
     "@nestjs/mapped-types": "*",

@@ -8,12 +8,14 @@ import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { RolesGuard } from './auth/guards/roles.guard';
 import { MailModule } from './mail/mail.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
     AuthModule,
     CardsModule,
     ColumnsModule,
+    ConfigModule.forRoot(),
     DatabaseModule,
     UsersModule,
     MailModule,
