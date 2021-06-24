@@ -67,10 +67,6 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
-## Database Design
-
-![Screenshot](/db-design.png)
-
 ## User Stories
 
 User can signup/login with username, email, and password
@@ -91,6 +87,10 @@ User can update card order
 
 User can archive card
 
+## Database Design
+
+![Screenshot](/db-design.png)
+
 ## API Documentation
 
-After running nest js app, visit [http://localhost:3000/api/v1/docs](http://localhost:3000/api/docs).
+After running nest js app, visit [http://localhost:3000/api/v1/docs](http://localhost:3000/api/v1/docs).
